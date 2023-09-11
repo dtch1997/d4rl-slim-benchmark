@@ -1,0 +1,156 @@
+# Setup project
+[build-system]
+requires = ["hatchling", "hatch-regex-commit"]
+build-backend = "hatchling.build"
+
+[project]
+name = "d4rl-slim-benchmark"
+authors = [
+  { name = "d4rl-slim-benchmark", email = "dtch1997@users.noreply.github.com" }
+]
+description = "Code for benchmarking D4RL-slim"
+readme = "README.md"
+dynamic = ["version"]
+classifiers = [
+    "Programming Language :: Python :: 3 :: Only",
+]
+requires-python = ">=3.10"
+dependencies = [
+    "absl-py",
+    "ml_collections",
+    "wandb",
+    "tensorboard"
+]
+
+[project.urls]
+Documentation = "https://dtch1997.github.io/d4rl-slim-benchmark/"
+Source = "https://github.com/dtch1997/d4rl-slim-benchmark"
+
+# Setup hatch
+[tool.hatch]
+
+[tool.hatch.metadata]
+allow-direct-references = true
+
+[tool.hatch.version]
+source = "regex_commit"
+tag_sign = false
+path = "d4rl_slim_benchmark/__init__.py"
+
+# Setup default env
+[tool.hatch.envs.default]
+dependencies = [
+  "coverage[toml]>=6.5",
+  "pytest",
+]
+[tool.hatch.envs.default.scripts]
+test = "pytest {args:tests}"
+test-cov = "coverage run -m pytest {args:tests}"
+cov-report = [
+  "- coverage combine",
+  "coverage report",
+]
+cov = [
+  "test-cov",
+  "cov-report",
+]
+
+# Setup compile env
+[tool.hatch.envs.compile]
+dependencies=[
+  "pip-tools"
+]
+detached = true
+
+[tool.hatch.envs.compile.scripts]
+base = [
+  "mkdir -p requirements",
+  "python -m piptools compile pyproject.toml -o requirements/base.txt"
+]
+
+# Setup lint env
+[tool.hatch.envs.lint]
+detached = true
+dependencies = [
+  "black>=23.1.0",
+  "mypy>=1.0.0",
+  "ruff>=0.0.243",
+]
+[tool.hatch.envs.lint.scripts]
+typing = "mypy --install-types --non-interactive {args:hatch_demo tests}"
+style = [
+  "ruff {args:.}",
+  "black --check --diff {args:.}",
+]
+fmt = [
+  "black {args:.}",
+  "ruff --fix {args:.}",
+  "style",
+]
+all = [
+  "style",
+  "typing",
+]
+
+# Setup docs env
+[tool.hatch.envs.docs]
+dependencies = [
+    "mkdocs-material",
+    "mkdocstrings[python]",
+]
+detached = true
+
+[tool.hatch.envs.docs.scripts]
+docs-serve = "mkdocs serve"
+docs-build = "mkdocs build"
+
+# Configure black
+[tool.black]
+line-length = 88
+target-version = "py310"
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.eggs
+  | \.git
+  | docs
+  | .github
+  | third_party
+  | _vendor
+  | scratch
+)/
+'''
+
+# Configure ruff
+[tool.ruff]
+line-length = 88
+target-version = "py310"
+select = [
+  "E",   # pycodestyle
+  "F",   # pyflakes
+  "I",
+]
+
+[tool.ruff.extend-per-file-ignores]
+"__init__.py" = ["F401"]
+
+[tool.ruff.isort]
+known-first-party = ["d4rl_slim_benchmark"]
+force-single-line = true
+single-line-exclusions = ["typing"]
+
+[tool.ruff.flake8-tidy-imports]
+ban-relative-imports = "all"
+
+# Configure coverage
+[tool.coverage.run]
+source_pkgs = ["d4rl_slim_benchmark", "tests"]
+branch = true
+parallel = true
+
+[tool.coverage.report]
+exclude_lines = [
+  "no cov",
+  "if __name__ == .__main__.:",
+  "if TYPE_CHECKING:",
+]

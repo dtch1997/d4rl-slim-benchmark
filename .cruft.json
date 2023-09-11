@@ -1,0 +1,27 @@
+{
+  "template": "https://github.com/dtch1997/hatch-pypackage-cookiecutter.git",
+  "commit": "1878b6a0894e919c3eee93e236e50ca392b83303",
+  "checkout": null,
+  "context": {
+    "cookiecutter": {
+      "full_name": "Daniel CH Tan",
+      "email": "dtch1997@users.noreply.github.com",
+      "github_username": "dtch1997",
+      "project_name": "D4RL Slim Benchmark",
+      "dist_name": "d4rl-slim-benchmark",
+      "package_name": "d4rl_slim_benchmark",
+      "project_short_description": "Code for benchmarking D4RL-slim",
+      "repository_name": "dtch1997/d4rl-slim-benchmark",
+      "repository_url": "https://github.com/dtch1997/d4rl-slim-benchmark",
+      "docs_url": "https://dtch1997.github.io/d4rl-slim-benchmark/",
+      "open_source_license": "MIT license",
+      "python_version": "3.10",
+      "asyncio": "Y",
+      "docs_icon": "material/library",
+      "docs_color_primary": "red",
+      "docs_color_accent": "red",
+      "_template": "https://github.com/dtch1997/hatch-pypackage-cookiecutter.git"
+    }
+  },
+  "directory": null
+}
