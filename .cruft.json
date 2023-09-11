@@ -1,6 +1,6 @@
 {
   "template": "https://github.com/dtch1997/hatch-pypackage-cookiecutter.git",
-  "commit": "1878b6a0894e919c3eee93e236e50ca392b83303",
+  "commit": "ab96aaac3c0042366712d9314ff76b1088bc6e7d",
   "checkout": null,
   "context": {
     "cookiecutter": {
