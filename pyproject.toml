@@ -28,6 +28,15 @@ dependencies = [
 Documentation = "https://dtch1997.github.io/d4rl-slim-benchmark/"
 Source = "https://github.com/dtch1997/d4rl-slim-benchmark"
 
+[project.optional-dependencies]
+d4rl = [
+  "d4rl @ git+https://github.com/Farama-Foundation/d4rl@master#egg=d4rl",
+  "Cython==0.29.36"
+]
+d4rl-slim = [
+  "d4rl_slim[all] @ git+https://github.com/dtch1997/d4rl-slim.git"
+]
+
 # Setup hatch
 [tool.hatch]
 
@@ -40,14 +49,10 @@ tag_sign = false
 path = "d4rl_slim_benchmark/__init__.py"
 
 [tool.hatch.envs.d4rl_slim]
-dependencies = [
-  "d4rl_slim[all] @ git+https://github.com/dtch1997/d4rl-slim.git"
-]
+features = ["d4rl-slim"]
 
 [tool.hatch.envs.d4rl]
-dependencies = [
-  "d4rl @ git+https://github.com/Farama-Foundation/d4rl@master#egg=d4rl"
-]
+features = ["d4rl"]
 
 # Setup default env
 [tool.hatch.envs.default]
@@ -78,6 +83,14 @@ detached = true
 base = [
   "mkdir -p requirements",
   "python -m piptools compile pyproject.toml -o requirements/base.txt"
+]
+d4rl = [
+  "mkdir -p requirements",
+  "python -m piptools compile pyproject.toml --extra d4rl -o requirements/d4rl.txt"
+]
+d4rl-slim = [
+  "mkdir -p requirements",
+  "python -m piptools compile pyproject.toml --extra d4rl-slim -o requirements/d4rl-slim.txt"
 ]
 
 # Setup lint env
