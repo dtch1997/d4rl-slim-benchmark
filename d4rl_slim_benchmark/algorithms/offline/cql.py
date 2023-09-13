@@ -1,16 +1,18 @@
 # source: https://github.com/young-geng/CQL/tree/934b0e8354ca431d6c083c4e3a29df88d4b0a24d
 # https://arxiv.org/pdf/2006.04779.pdf
 from copy import deepcopy
-import torch
+from typing import Any, Dict, Tuple
+
 import numpy as np
+import torch
 import torch.nn as nn
 import torch.nn.functional as F
-import wandb
-from torch.distributions import Normal, TanhTransform, TransformedDistribution
+from torch.distributions import Normal
+from torch.distributions import TanhTransform
+from torch.distributions import TransformedDistribution
 
 from d4rl_slim_benchmark.buffer import TensorBatch
 from d4rl_slim_benchmark.utils import soft_update
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 
 
 def extend_and_repeat(tensor: torch.Tensor, dim: int, repeat: int) -> torch.Tensor:

@@ -1,12 +1,13 @@
+import os
+import random
+from typing import Optional, Union
+
+import d4rl_slim as d4rl
+import gymnasium as gym
 import numpy as np
 import torch
 import torch.nn as nn
-import gymnasium as gym
-import os
-import d4rl_slim as d4rl
-import random
 
-from typing import Optional, Union
 
 def set_seed(
     seed: int, env: Optional[gym.Env] = None, deterministic_torch: bool = False
@@ -45,7 +46,8 @@ def load_env(dataset_name):
     return env, dataset
 
 def get_normalize_score_fn(dataset_name):
-    normalize_score_fn = lambda score: d4rl.get_normalized_score(dataset_name, score)
+    def normalize_score_fn(score):
+        return d4rl.get_normalized_score(dataset_name, score)
     return normalize_score_fn
 
 def wrap_env(

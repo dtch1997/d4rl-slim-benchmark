@@ -1,5 +1,4 @@
 from absl import app
-from absl import flags
 from ml_collections import config_flags
 
 _CONFIG = config_flags.DEFINE_config_file('config')

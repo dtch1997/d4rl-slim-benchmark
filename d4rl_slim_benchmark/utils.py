@@ -1,10 +1,10 @@
-import torch
+import uuid
+from typing import Tuple
+
+import numpy as np
 import torch.nn as nn
 import wandb
-import numpy as np
-import uuid
 
-from typing import Tuple
 
 def compute_mean_std(states: np.ndarray, eps: float) -> Tuple[np.ndarray, np.ndarray]:
     mean = states.mean(0)

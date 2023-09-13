@@ -1,23 +1,21 @@
 
 import os
-import yaml
+import uuid
+from pathlib import Path
+
 import torch
 import wandb
-import uuid
-
-from pathlib import Path
+import yaml
 from absl import app
 from absl import flags
 from ml_collections import config_flags
 
-from d4rl_slim_benchmark.buffer import ReplayBuffer, TensorBatch
-from d4rl_slim_benchmark.utils import (
-    compute_mean_std,
-    normalize_states,
-    wandb_init,
-    modify_reward,
-)
 from d4rl_slim_benchmark.algorithms import get_algo_factory
+from d4rl_slim_benchmark.buffer import ReplayBuffer
+from d4rl_slim_benchmark.utils import compute_mean_std
+from d4rl_slim_benchmark.utils import modify_reward
+from d4rl_slim_benchmark.utils import normalize_states
+from d4rl_slim_benchmark.utils import wandb_init
 
 FLAGS = flags.FLAGS
 
@@ -36,13 +34,17 @@ def train(_):
 
     # Configure d4rl (gym) or d4rl-slim (gymnasium)
     if config.use_d4rl_slim:
-        from d4rl_slim_benchmark.d4rl_slim_utils import (
-            eval_actor, load_env, set_seed, get_normalize_score_fn, wrap_env
-        )
+        from d4rl_slim_benchmark.d4rl_slim_utils import eval_actor
+        from d4rl_slim_benchmark.d4rl_slim_utils import get_normalize_score_fn
+        from d4rl_slim_benchmark.d4rl_slim_utils import load_env
+        from d4rl_slim_benchmark.d4rl_slim_utils import set_seed
+        from d4rl_slim_benchmark.d4rl_slim_utils import wrap_env
     else:
-        from d4rl_slim_benchmark.d4rl_utils import (
-            eval_actor, load_env, set_seed, get_normalize_score_fn, wrap_env
-        )
+        from d4rl_slim_benchmark.d4rl_utils import eval_actor
+        from d4rl_slim_benchmark.d4rl_utils import get_normalize_score_fn
+        from d4rl_slim_benchmark.d4rl_utils import load_env
+        from d4rl_slim_benchmark.d4rl_utils import set_seed
+        from d4rl_slim_benchmark.d4rl_utils import wrap_env
 
     env, dataset = load_env(config.env)
     normalize_score_fn = get_normalize_score_fn(config.env)

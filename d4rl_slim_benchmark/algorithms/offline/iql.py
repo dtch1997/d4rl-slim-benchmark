@@ -1,17 +1,17 @@
 # source: https://github.com/gwthomas/IQL-PyTorch
 # https://arxiv.org/pdf/2110.06169.pdf
 import copy
+from typing import Any, Callable, Dict, Optional, Tuple
+
 import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
-
-from d4rl_slim_benchmark.buffer import TensorBatch
-from d4rl_slim_benchmark.utils import soft_update
-from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from torch.distributions import Normal
 from torch.optim.lr_scheduler import CosineAnnealingLR
 
+from d4rl_slim_benchmark.buffer import TensorBatch
+from d4rl_slim_benchmark.utils import soft_update
 
 EXP_ADV_MAX = 100.0
 LOG_STD_MIN = -20.0
@@ -20,10 +20,6 @@ LOG_STD_MAX = 2.0
 def asymmetric_l2_loss(u: torch.Tensor, tau: float) -> torch.Tensor:
     return torch.mean(torch.abs(tau - (u < 0).float()) * u**2)
 
-
-def soft_update(target: nn.Module, source: nn.Module, tau: float):
-    for target_param, source_param in zip(target.parameters(), source.parameters()):
-        target_param.data.copy_((1 - tau) * target_param.data + tau * source_param.data)
 
 class Squeeze(nn.Module):
     def __init__(self, dim=-1):

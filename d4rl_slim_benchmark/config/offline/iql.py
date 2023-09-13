@@ -1,8 +1,11 @@
 """Configuration for running rl_cbf_2.main """
 
-from ml_collections import config_dict
-from dataclasses import dataclass, asdict
+from dataclasses import asdict
+from dataclasses import dataclass
 from typing import Optional
+
+from ml_collections import config_dict
+
 
 def get_config():
     config = TrainConfig()
