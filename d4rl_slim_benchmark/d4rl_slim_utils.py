@@ -20,6 +20,7 @@ def set_seed(
     torch.manual_seed(seed)
     torch.use_deterministic_algorithms(deterministic_torch)
 
+
 @torch.no_grad()
 def eval_actor(
     env: gym.Env, actor: nn.Module, device: str, n_episodes: int, seed: int
@@ -40,15 +41,19 @@ def eval_actor(
     actor.train()
     return np.asarray(episode_rewards)
 
+
 def load_env(dataset_name):
     env = d4rl.get_environment(dataset_name)
     dataset = d4rl.get_dataset(dataset_name)
     return env, dataset
 
+
 def get_normalize_score_fn(dataset_name):
     def normalize_score_fn(score):
         return d4rl.get_normalized_score(dataset_name, score)
+
     return normalize_score_fn
+
 
 def wrap_env(
     env: gym.Env,

@@ -15,6 +15,7 @@ def compute_mean_std(states: np.ndarray, eps: float) -> Tuple[np.ndarray, np.nda
 def normalize_states(states: np.ndarray, mean: np.ndarray, std: np.ndarray):
     return (states - mean) / std
 
+
 def wandb_init(config: dict) -> None:
     wandb.init(
         config=config,
@@ -48,6 +49,7 @@ def modify_reward(dataset, env_name, max_episode_steps=1000):
         dataset["rewards"] *= max_episode_steps
     elif "antmaze" in env_name:
         dataset["rewards"] -= 1.0
+
 
 def soft_update(target: nn.Module, source: nn.Module, tau: float):
     for target_param, source_param in zip(target.parameters(), source.parameters()):

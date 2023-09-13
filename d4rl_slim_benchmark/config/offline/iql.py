@@ -13,6 +13,7 @@ def get_config():
     config = config_dict.create(**config)
     return config
 
+
 @dataclass
 class TrainConfig:
     # Experiment

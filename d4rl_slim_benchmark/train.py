@@ -1,4 +1,3 @@
-
 import os
 import uuid
 from pathlib import Path
@@ -20,10 +19,10 @@ from d4rl_slim_benchmark.utils import wandb_init
 FLAGS = flags.FLAGS
 
 flags.DEFINE_string("algo", None, "Algorithm to use")
-config_flags.DEFINE_config_file('config', None, 'File path to the configuration file.')
+config_flags.DEFINE_config_file("config", None, "File path to the configuration file.")
+
 
 def train(_):
-
     config = FLAGS.config
     algo_factory = get_algo_factory(FLAGS.algo)
 

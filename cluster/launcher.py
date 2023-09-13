@@ -20,7 +20,9 @@ _IMAGE = flags.DEFINE_string(
     "image", os.environ.get("LXM_SINGULARITY_IMAGE"), "Path to container image."
 )
 _EXP_NAME = flags.DEFINE_string("exp_name", None, "Name of experiment")
-_WANDB_PROJECT = flags.DEFINE_string("wandb_project", "d4rl_slim_benchmark", "wandb project")
+_WANDB_PROJECT = flags.DEFINE_string(
+    "wandb_project", "d4rl_slim_benchmark", "wandb project"
+)
 _WANDB_ENTITY = flags.DEFINE_string("wandb_entity", "dtch1997", "wandb user")
 _WANDB_GROUP = flags.DEFINE_string("wandb_group", "{xid}_{name}", "wandb group")
 _WANDB_MODE = flags.DEFINE_string("wandb_mode", "online", "wandb mode")

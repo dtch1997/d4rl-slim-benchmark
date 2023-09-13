@@ -17,6 +17,7 @@ EXP_ADV_MAX = 100.0
 LOG_STD_MIN = -20.0
 LOG_STD_MAX = 2.0
 
+
 def asymmetric_l2_loss(u: torch.Tensor, tau: float) -> torch.Tensor:
     return torch.mean(torch.abs(tau - (u < 0).float()) * u**2)
 
@@ -93,7 +94,9 @@ class GaussianPolicy(nn.Module):
         state = torch.tensor(state.reshape(1, -1), device=device, dtype=torch.float32)
         dist = self(state)
         action = dist.mean if not self.training else dist.sample()
-        action = torch.clamp(self.max_action * action, -self.max_action, self.max_action)
+        action = torch.clamp(
+            self.max_action * action, -self.max_action, self.max_action
+        )
         return action.cpu().data.numpy().flatten()
 
 
@@ -122,7 +125,9 @@ class DeterministicPolicy(nn.Module):
     def act(self, state: np.ndarray, device: str = "cpu"):
         state = torch.tensor(state.reshape(1, -1), device=device, dtype=torch.float32)
         return (
-            torch.clamp(self(state) * self.max_action, -self.max_action, self.max_action)
+            torch.clamp(
+                self(state) * self.max_action, -self.max_action, self.max_action
+            )
             .cpu()
             .data.numpy()
             .flatten()
@@ -299,6 +304,7 @@ class ImplicitQLearning:
         self.actor_lr_schedule.load_state_dict(state_dict["actor_lr_schedule"])
 
         self.total_it = state_dict["total_it"]
+
 
 def make_trainer(config, env):
     state_dim = env.observation_space.shape[0]

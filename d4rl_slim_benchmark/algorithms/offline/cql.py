@@ -39,7 +39,10 @@ def init_module_weights(module: torch.nn.Sequential, orthogonal_init: bool = Fal
 
 class ReparameterizedTanhGaussian(nn.Module):
     def __init__(
-        self, log_std_min: float = -20.0, log_std_max: float = 2.0, no_tanh: bool = False
+        self,
+        log_std_min: float = -20.0,
+        log_std_max: float = 2.0,
+        no_tanh: bool = False,
     ):
         super().__init__()
         self.log_std_min = log_std_min
@@ -175,7 +178,9 @@ class FullyConnectedQFunction(nn.Module):
 
         init_module_weights(self.network, orthogonal_init)
 
-    def forward(self, observations: torch.Tensor, actions: torch.Tensor) -> torch.Tensor:
+    def forward(
+        self, observations: torch.Tensor, actions: torch.Tensor
+    ) -> torch.Tensor:
         multiple_actions = False
         batch_size = observations.shape[0]
         if actions.ndim == 3 and observations.ndim == 2:
@@ -600,7 +605,6 @@ class ContinuousCQL:
 
 
 def make_trainer(config, env):
-
     state_dim = env.observation_space.shape[0]
     action_dim = env.action_space.shape[0]
     max_action = float(env.action_space.high[0])
@@ -610,9 +614,9 @@ def make_trainer(config, env):
         config.orthogonal_init,
         config.q_n_hidden_layers,
     ).to(config.device)
-    critic_2 = FullyConnectedQFunction(state_dim, action_dim, config.orthogonal_init).to(
-        config.device
-    )
+    critic_2 = FullyConnectedQFunction(
+        state_dim, action_dim, config.orthogonal_init
+    ).to(config.device)
     critic_1_optimizer = torch.optim.Adam(list(critic_1.parameters()), config.qf_lr)
     critic_2_optimizer = torch.optim.Adam(list(critic_2.parameters()), config.qf_lr)
 
