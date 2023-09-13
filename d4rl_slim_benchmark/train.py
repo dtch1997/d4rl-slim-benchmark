@@ -3,6 +3,7 @@ import os
 import yaml
 import torch
 import wandb
+import uuid
 
 from pathlib import Path
 from absl import app
@@ -16,14 +17,24 @@ from d4rl_slim_benchmark.utils import (
     wandb_init,
     modify_reward,
 )
-from d4rl_slim_benchmark.algorithms.offline.iql import make_trainer
+from d4rl_slim_benchmark.algorithms import get_algo_factory
 
 FLAGS = flags.FLAGS
-config_flags.DEFINE_config_file('config')
+
+flags.DEFINE_string("algo", None, "Algorithm to use")
+config_flags.DEFINE_config_file('config', None, 'File path to the configuration file.')
 
 def train(_):
 
     config = FLAGS.config
+    algo_factory = get_algo_factory(FLAGS.algo)
+
+    # Manually generate the name
+    config.name = f"{config.name}-{config.env}-{str(uuid.uuid4())[:8]}"
+    if config.checkpoints_path is not None:
+        config.checkpoints_path = os.path.join(config.checkpoints_path, config.name)
+
+    # Configure d4rl (gym) or d4rl-slim (gymnasium)
     if config.use_d4rl_slim:
         from d4rl_slim_benchmark.d4rl_slim_utils import (
             eval_actor, load_env, set_seed, get_normalize_score_fn, wrap_env
@@ -71,7 +82,7 @@ def train(_):
     seed = config.seed
     set_seed(seed, env)
 
-    trainer = make_trainer(config, env)
+    trainer = algo_factory(config, env)
     actor = trainer.actor
 
     if config.load_model != "":

@@ -7,6 +7,7 @@ import torch.nn as nn
 import torch.nn.functional as F
 
 from d4rl_slim_benchmark.buffer import TensorBatch
+from d4rl_slim_benchmark.utils import soft_update
 from typing import Any, Callable, Dict, List, Optional, Tuple, Union
 from torch.distributions import Normal
 from torch.optim.lr_scheduler import CosineAnnealingLR
