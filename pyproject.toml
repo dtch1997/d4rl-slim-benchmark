@@ -19,7 +19,9 @@ dependencies = [
     "absl-py",
     "ml_collections",
     "wandb",
-    "tensorboard"
+    "tensorboard",
+    "torch",
+    "pyrallis"
 ]
 
 [project.urls]
@@ -36,6 +38,16 @@ allow-direct-references = true
 source = "regex_commit"
 tag_sign = false
 path = "d4rl_slim_benchmark/__init__.py"
+
+[tool.hatch.envs.d4rl_slim]
+dependencies = [
+  "d4rl_slim[all] @ git+https://github.com/dtch1997/d4rl-slim.git"
+]
+
+[tool.hatch.envs.d4rl]
+dependencies = [
+  "d4rl @ git+https://github.com/Farama-Foundation/d4rl@master#egg=d4rl"
+]
 
 # Setup default env
 [tool.hatch.envs.default]
