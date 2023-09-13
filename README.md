@@ -24,7 +24,7 @@ We use [Hatch](https://hatch.pypa.io/latest/install/) to manage the development 
 
 ## Development
 
-See our [development guide](docs/development.md). 
+See our [development guide](docs/development.md).
 
 ## License
 

@@ -1,9 +1,9 @@
-import numpy as np 
+import numpy as np
 import torch
 import torch.nn as nn
-import gym 
+import gym
 import d4rl
-import os 
+import os
 import random
 
 from typing import Optional, Union

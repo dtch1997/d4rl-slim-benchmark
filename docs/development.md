@@ -1,6 +1,6 @@
 # Development
 
-This is a guide for developers. 
+This is a guide for developers.
 
 ### Run unit tests
 

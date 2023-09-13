@@ -102,6 +102,11 @@ dependencies = [
   "ruff>=0.0.243",
 ]
 [tool.hatch.envs.lint.scripts]
+check = [
+  "black --check .",
+  "ruff .",
+  "mypy {{ cookiecutter.package_name }}/",
+]
 typing = "mypy --install-types --non-interactive {args:hatch_demo tests}"
 style = [
   "ruff {args:.}",

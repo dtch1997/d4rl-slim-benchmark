@@ -40,7 +40,7 @@ def train(_):
             eval_actor, load_env, set_seed, get_normalize_score_fn, wrap_env
         )
     else:
-        from d4rl_slim_benchmark.d4rl_utils import ( 
+        from d4rl_slim_benchmark.d4rl_utils import (
             eval_actor, load_env, set_seed, get_normalize_score_fn, wrap_env
         )
 
