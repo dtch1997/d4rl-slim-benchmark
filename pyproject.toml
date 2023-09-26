@@ -105,7 +105,6 @@ dependencies = [
 check = [
   "black --check .",
   "ruff .",
-  "mypy {{ cookiecutter.package_name }}/",
 ]
 typing = "mypy --install-types --non-interactive {args:hatch_demo tests}"
 style = [
