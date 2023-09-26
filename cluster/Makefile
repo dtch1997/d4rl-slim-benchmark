@@ -1,10 +1,11 @@
 
 IMAGE_TAG ?= latest
 IMAGE_NAME ?= d4rl_slim_benchmark
+DOCKERFILE ?= Dockerfile
 
 .PHONY: build-docker
 build-docker:
-	docker buildx build --tag $(IMAGE_NAME):$(IMAGE_TAG) -f Dockerfile ..
+	docker buildx build --tag $(IMAGE_NAME):$(IMAGE_TAG) -f $(DOCKERFILE) ..
 
 .PHONY: build-singularity
 build-singularity: build-docker
