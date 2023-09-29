@@ -17,11 +17,14 @@ def get_config():
 
 @dataclass
 class TrainConfig:
-    algo: str = "cql"
 
-    # Experiment
-    device: str = "cuda"
+    # Experiment configuration
+    algo: str = "cql"
+    use_d4rl_slim: bool = False
     env: str = "halfcheetah-medium-expert-v2"  # OpenAI gym environment name
+
+    # Training params
+    device: str = "cuda"
     seed: int = 0  # Sets Gym, PyTorch and Numpy seeds
     eval_freq: int = int(5e3)  # How often (time steps) we evaluate
     n_episodes: int = 10  # How many episodes run during evaluation
@@ -63,8 +66,20 @@ class TrainConfig:
     policy_log_std_multiplier: float = 1.0
 
     # Wandb logging
-    project: str = "CORL"
-    group: str = "CQL-D4RL"
-    name: str = "CQL"
+    project: Optional[str] = None
+    group: Optional[str] = None
+    name: Optional[str] = None
 
-    use_d4rl_slim: bool = False
+def get_sweep(h):
+    del h
+    sweep = []
+    for seed in [0, 1, 2]:
+        for env_type in ("walker2d", "hopper", "halfcheetah"):
+            for dataset_type in ("medium", "random", "expert", "medium-expert"):
+                sweep.append(
+                    {
+                        "config.seed": seed,
+                        "config.env": f"{env_type}-{dataset_type}-v2",
+                    }
+                )
+    return sweep

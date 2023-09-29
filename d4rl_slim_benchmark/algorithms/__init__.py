@@ -8,4 +8,4 @@ ALGORITHMS = {
 
 
 def get_algo_factory(algo_name):
-    return ALGORITHMS[algo_name]
+    return ALGORITHMS[algo_name.upper()]
