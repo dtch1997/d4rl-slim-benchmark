@@ -8,6 +8,35 @@ import numpy as np
 import torch
 import torch.nn as nn
 
+from d4rl_slim import infos
+
+def get_environment(dataset_name: str, version: str = 'v2', **kwargs) -> gym.Env:
+    """Load a Gymnasium environment compatible with a given dataset."""
+    # Modified to allow specifying version of environment
+
+    if dataset_name not in infos.list_datasets():
+        raise ValueError(f"Unknown dataset: {dataset_name}")
+
+    # mujoco environments are delegated to gymnasium mujoco v4 environments.
+    if dataset_name.startswith(("ant-", "halfcheetah-", "hopper-", "walker2d-")):
+        env_id, kwargs = {
+            "halfcheetah": (f"HalfCheetah-{version}", {}),
+            "hopper": (f"Hopper-{version}", {}),
+            "walker2d": (f"Walker2d-{version}", {}),
+            # v4 ant defaults to not using contact forces.
+            "ant": (f"Ant-{version}", {"use_contact_forces": True}),
+        }[dataset_name.split("-")[0]]
+        env = gym.make(env_id, **kwargs)
+        # D4RL uses a NormalizedBox which is only used for normalizing actions
+        env = gym.wrappers.ClipAction(env)
+        env = gym.wrappers.RescaleAction(env, -1.0, 1.0)
+    else:
+        # Fall back to loading from d4rl_slim namespace.
+        slim_env_name = f"d4rl_slim/{dataset_name}"
+        env = gym.make(slim_env_name, **kwargs)
+
+    return env
+
 
 def set_seed(
     seed: int, env: Optional[gym.Env] = None, deterministic_torch: bool = False
@@ -43,7 +72,7 @@ def eval_actor(
 
 
 def load_env(dataset_name):
-    env = d4rl.get_environment(dataset_name)
+    env = get_environment(dataset_name, version = 'v2')
     dataset = d4rl.get_dataset(dataset_name)
     return env, dataset
 
