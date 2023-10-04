@@ -70,6 +70,8 @@ class TrainConfig:
     group: Optional[str] = None
     name: Optional[str] = None
 
+    use_d4rl_slim: bool = False
+
 def get_sweep(h):
     del h
     sweep = []

@@ -1,37 +1,33 @@
 FROM dtch1997/ml-ubuntu-cuda:ubuntu-22.04-python3.10-latest
 
-# Install build dependencies for Mujoco-Py
-RUN apt-get update -q \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y \
+# Install MujocoPy dependencies
+RUN apt-get update \
+    && DEBIAN_FRONTEND=noninteractive apt-get install -q -y --no-install-recommends \
+    cuda-nvcc-11-8 \
     curl \
     git \
-    libgl1-mesa-dev \
+    ffmpeg \
+    libegl1 \
+    libgl1 \
     libgl1-mesa-glx \
-    libglew-dev \
+    libgles2 \
+    libglew2.2 \
+    libglfw3 \
+    libglvnd0 \
+    libglx0 \
     libosmesa6-dev \
-    software-properties-common \
-    net-tools \
-    vim \
-    virtualenv \
-    wget \
-    xpra \
-    xserver-xorg-dev \
+    # Extra deps for downstream
+    # unzip \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
-# Install Mujoco-py
-RUN curl -o /usr/local/bin/patchelf https://s3-us-west-2.amazonaws.com/openai-sci-artifacts/manual-builds/patchelf_0.9_amd64.elf \
-    && chmod +x /usr/local/bin/patchelf
-
-ENV LANG C.UTF-8
-
-RUN mkdir -p /root/.mujoco \
-    && wget https://mujoco.org/download/mujoco210-linux-x86_64.tar.gz -O mujoco.tar.gz \
-    && tar -xf mujoco.tar.gz -C /root/.mujoco \
-    && rm mujoco.tar.gz
-
-ENV LD_LIBRARY_PATH /root/.mujoco/mujoco210/bin:${LD_LIBRARY_PATH}
-ENV LD_LIBRARY_PATH /usr/local/nvidia/lib64:${LD_LIBRARY_PATH}
+# Install MujocoPy
+ENV MUJOCO_DIR=/opt/mujoco
+ENV MUJOCO_PY_MUJOCO_PATH=/opt/mujoco/mujoco210
+RUN mkdir -p ${MUJOCO_DIR} && \ 
+    wget https://github.com/deepmind/mujoco/releases/download/2.1.0/mujoco210-linux-x86_64.tar.gz && \ 
+    tar -C ${MUJOCO_DIR} -xvzf mujoco210-linux-x86_64.tar.gz
+ENV LD_LIBRARY_PATH ${MUJOCO_PY_MUJOCO_PATH}/bin:${LD_LIBRARY_PATH}
 
 # Install requirements
 COPY ./requirements /tmp/requirements

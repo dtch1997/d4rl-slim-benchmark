@@ -50,7 +50,8 @@ tag_sign = false
 path = "d4rl_slim_benchmark/__init__.py"
 
 [tool.hatch.envs.d4rl_slim]
-features = ["d4rl-slim"]
+features = ["d4rl-slim", "d4rl"]
+# Still need the d4rl features to test -v2 envs... 
 
 [tool.hatch.envs.d4rl]
 features = ["d4rl"]
@@ -91,7 +92,7 @@ d4rl = [
 ]
 d4rl-slim = [
   "mkdir -p requirements",
-  "python -m piptools compile pyproject.toml --extra d4rl-slim -o requirements/d4rl-slim.txt"
+  "python -m piptools compile pyproject.toml --extra d4rl-slim --extra d4rl -o requirements/d4rl-slim.txt"
 ]
 
 # Setup lint env
