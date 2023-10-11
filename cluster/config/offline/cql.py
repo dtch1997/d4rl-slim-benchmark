@@ -78,10 +78,12 @@ def get_sweep(h):
     for seed in [0, 1, 2]:
         for env_type in ("walker2d", "hopper", "halfcheetah"):
             for dataset_type in ("medium", "random", "expert", "medium-expert"):
-                sweep.append(
-                    {
-                        "config.seed": seed,
-                        "config.env": f"{env_type}-{dataset_type}-v2",
-                    }
-                )
+                for use_d4rl_slim in (True, False):
+                    sweep.append(
+                        {
+                            "config.seed": seed,
+                            "config.env": f"{env_type}-{dataset_type}-v2",
+                            "config.use_d4rl_slim": use_d4rl_slim,
+                        }
+                    )
     return sweep
